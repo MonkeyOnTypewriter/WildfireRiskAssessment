@@ -1,0 +1,6 @@
+<h1>Welcome to Fire Risk</h1>
+{% if user.is_authenticated %}
+  <p>Hello, {{ user.username }}! <a href="{% url 'logout' %}">Logout</a></p>
+{% else %}
+  <a href="{% url 'login' %}">Log In</a> | <a href="{% url 'signup' %}">Sign Up</a>
+{% endif %}
