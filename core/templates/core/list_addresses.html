@@ -1,0 +1,14 @@
+{% extends 'core/base.html' %}
+{% block content %}
+  <h2>Your Saved Addresses</h2>
+  <ul>
+    {% for address in addresses %}
+      <li>
+        {{ address }} — 
+        <a href="{% url 'create_order' address.id %}">Submit for Evaluation</a>
+      </li>
+    {% empty %}
+      <li>No addresses yet. <a href="{% url 'create_address' %}">Add one</a></li>
+    {% endfor %}
+  </ul>
+{% endblock %}
