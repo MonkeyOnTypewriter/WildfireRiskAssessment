@@ -25,7 +25,7 @@ class AssessmentOrder(models.Model):
     ('complete', 'Complete'),
     ]
 
-    address = models.ForeignKey(Address, on_delete=models.CASCADE)
+    address = models.ForeignKey(Address, on_delete=models.CASCADE, related_name='order')
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
 

@@ -1,14 +1,16 @@
+
+
 {% extends 'core/base.html' %}
 {% block content %}
   <h2>Your Saved Addresses</h2>
   <ul>
-    {% for address in addresses %}
+    {% for item in address_info %}
       <li>
-        {{ address }} — 
-        <a href="{% url 'create_order' address.id %}">Submit for Evaluation</a>
+        {{ item.address }} —
+        <strong>Status:</strong> {{ item.latest_order_status }} —
+        <a href="{% url 'create_order' item.address.id %}">Submit for Evaluation</a>
       </li>
-    {% empty %}
-      <li>No addresses yet. <a href="{% url 'create_address' %}">Add one</a></li>
     {% endfor %}
+    <li><a href="{% url 'create_address' %}">Add new address</a></li>
   </ul>
 {% endblock %}

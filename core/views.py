@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import login_required
+from django.db.models import Max
 from .forms import AddressForm
 from .models import Address, AssessmentOrder
 
@@ -36,10 +37,33 @@ def logout_view(request):
     logout(request)
     return redirect('home')
 
+#@login_required
+#def list_addresses(request):
+#    addresses = Address.objects.filter(user=request.user)
+#    return render(request, 'core/list_addresses.html', {'addresses': addresses})
+
+
+
+
+
+
 @login_required
 def list_addresses(request):
-    addresses = Address.objects.filter(user=request.user)
-    return render(request, 'core/list_addresses.html', {'addresses': addresses})
+    addresses = Address.objects.filter(user=request.user).prefetch_related('order')
+    address_info = []
+
+    for address in addresses:
+        latest_order = address.order.order_by('created_at').first()
+        address_info.append({
+            'address': address,
+            'latest_order_status': latest_order.status if latest_order else 'No orders'
+        })
+
+    return render(request, 'core/list_addresses.html', {
+        'address_info': address_info
+    })
+
+
 
 
 @login_required
